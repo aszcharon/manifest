@@ -10,7 +10,6 @@ metadata:
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}]'
     alb.ingress.kubernetes.io/healthcheck-path: /
 spec:
-  ingressClassName: alb
   rules:
   - http:
       paths:
