@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: charon-blog
+  namespace: charon-blog
+  labels:
+    app: charon-blog
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: charon-blog
+  template:
+    metadata:
+      labels:
+        app: charon-blog
+    spec:
+      containers:
+      - name: charon-blog
+        image: 320644768930.dkr.ecr.ap-northeast-2.amazonaws.com/charon-test:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        imagePullPolicy: Always
